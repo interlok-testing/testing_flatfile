@@ -1,0 +1,115 @@
+<adapter>
+  <unique-id>flatfile</unique-id>
+  <start-up-event-imp>com.adaptris.core.event.StandardAdapterStartUpEvent</start-up-event-imp>
+  <heartbeat-event-imp>com.adaptris.core.HeartbeatEvent</heartbeat-event-imp>
+  <shared-components>
+    <connections/>
+    <services/>
+  </shared-components>
+  <event-handler class="default-event-handler">
+    <unique-id>DefaultEventHandler</unique-id>
+    <connection class="null-connection">
+      <unique-id>dreamy-mayer</unique-id>
+    </connection>
+    <producer class="null-message-producer">
+      <unique-id>nostalgic-montalcini</unique-id>
+    </producer>
+  </event-handler>
+  <message-error-handler class="null-processing-exception-handler">
+    <unique-id>cranky-goldstine</unique-id>
+  </message-error-handler>
+  <failed-message-retrier class="no-retries">
+    <unique-id>romantic-poincare</unique-id>
+  </failed-message-retrier>
+  <channel-list>
+    <channel>
+      <consume-connection class="null-connection">
+        <unique-id>reverent-spence</unique-id>
+      </consume-connection>
+      <produce-connection class="null-connection">
+        <unique-id>mad-lalande</unique-id>
+      </produce-connection>
+      <workflow-list>
+        <standard-workflow>
+          <consumer class="polling-trigger">
+            <unique-id>furious-pare</unique-id>
+            <poller class="fixed-interval-poller">
+              <poll-interval>
+                <unit>SECONDS</unit>
+                <interval>10</interval>
+              </poll-interval>
+            </poller>
+          </consumer>
+          <service-collection class="service-list">
+            <unique-id>zen-shannon</unique-id>
+            <services>
+              <embedded-scripting-service>
+                <unique-id>create-flatfile</unique-id>
+                <language>javascript</language>
+                <script>var randomNumber = Math.floor(Math.random() * 10) + 1;
+var date = "202101" + (randomNumber &gt; 9 ? "" + randomNumber : "0" + randomNumber);
+
+var xml = "HDRSRC20110601THE TITLE OF DOCSrcDescDestinationDesc  1234567890  \n" +
+ "DETField   1.01Field  1.02Field     1.03" + date + "Field   1.04400821\n" +
+ "TRL00000005                                                       ";
+
+message.setContent(xml, "UTF-8");
+if (randomNumber != 9) {
+  message.addMessageHeader("date", date);
+}
+</script>
+              </embedded-scripting-service>
+              <flat-file-transform-service>
+                <unique-id>flatfile-transform</unique-id>
+                <url>${ffDefinitionUrl}</url>
+                <metadata-key>transformurl</metadata-key>
+              </flat-file-transform-service>
+              <xpath-metadata-service>
+                <unique-id>parse-new-service-id</unique-id>
+                <xpath-query class="configured-xpath-query">
+                  <metadata-key>newDate</metadata-key>
+                  <xpath-query>/root/segment_Document/segment_Details/record_DET/CompletionDate</xpath-query>
+                </xpath-query>
+              </xpath-metadata-service>
+              <if-then-otherwise>
+                <unique-id>check-record-type</unique-id>
+                <condition class="expression">
+                  <algorithm>%message{date} != %message{newDate}</algorithm>
+                </condition>
+                <then>
+                  <service class="service-list">
+                    <unique-id>fails</unique-id>
+                    <services>
+                      <throw-exception-service>
+                        <unique-id>sick-galileo</unique-id>
+                        <exception-generator class="configured-exception">
+                          <message>recordType and newRecordType are different</message>
+                        </exception-generator>
+                      </throw-exception-service>
+                    </services>
+                  </service>
+                </then>
+                <otherwise>
+                  <service class="service-list">
+                    <unique-id>success</unique-id>
+                    <services/>
+                  </service>
+                </otherwise>
+              </if-then-otherwise>
+            </services>
+          </service-collection>
+          <producer class="null-message-producer">
+            <unique-id>tiny-hodgkin</unique-id>
+          </producer>
+          <produce-exception-handler class="null-produce-exception-handler"/>
+          <unique-id>flatfile</unique-id>
+        </standard-workflow>
+      </workflow-list>
+      <unique-id>flatfile</unique-id>
+    </channel>
+  </channel-list>
+  <message-error-digester class="standard-message-error-digester">
+    <unique-id>ErrorDigest</unique-id>
+    <digest-max-size>100</digest-max-size>
+  </message-error-digester>
+</adapter>

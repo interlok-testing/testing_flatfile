@@ -1,0 +1,17 @@
+{
+  "name" : "flatfile",
+  "variableSets" : {
+    "default" : { }
+  },
+  "variableXpaths" : {
+    "/adapter/channel-list/channel[unique-id=\"flatfile\"]/workflow-list/standard-workflow[unique-id=\"flatfile\"]/service-collection/services/flat-file-transform-service[unique-id=\"flatfile-transform\"]/url" : "${ffDefinitionUrl}"
+  },
+  "uidInXincludeCompntListFileName" : false,
+  "xincludeXpaths" : { },
+  "additionalFiles" : {
+    "bootstrap.properties" : "bootstrap.properties",
+    "log4j2.xml" : "log4j2.xml"
+  },
+  "optionalComponentsInUse" : [ "com.adaptris:interlok-flatfile:4.0-SNAPSHOT" ],
+  "structured" : true
+}

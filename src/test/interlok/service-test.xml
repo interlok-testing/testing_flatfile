@@ -1,0 +1,209 @@
+<service-test>
+  <unique-id>boring-keller</unique-id>
+  <test-client class="embedded-jmx-test-client">
+    <shared-components>
+      <connections/>
+      <services/>
+    </shared-components>
+    <shared-components-provider>
+      <services/>
+    </shared-components-provider>
+  </test-client>
+  <helpers/>
+  <test-list>
+    <unique-id>flatfile</unique-id>
+    <test>
+      <unique-id>create-flatfile@flatfile</unique-id>
+      <test-case>
+        <unique-id>assert-succes</unique-id>
+        <input-message-provider>
+          <metadata-provider class="empty-metadata-provider"/>
+          <payload-provider class="empty-payload-provider"/>
+        </input-message-provider>
+        <assertions>
+          <assert-payload-contains>
+            <payload><![CDATA[HDR]]></payload>
+          </assert-payload-contains>
+          <assert-payload-contains>
+            <payload><![CDATA[DETField]]></payload>
+          </assert-payload-contains>
+          <assert-payload-contains>
+            <payload><![CDATA[TRL00000005]]></payload>
+          </assert-payload-contains>
+        </assertions>
+      </test-case>
+      <service-to-test>
+        <source class="file-source">
+          <file>file:///${service.tester.working.directory}/src/main/interlok/config/adapter.xml</file>
+        </source>
+        <preprocessors>
+          <service-unique-id-preprocessor>
+            <channel>flatfile</channel>
+            <workflow>flatfile</workflow>
+            <service>create-flatfile</service>
+          </service-unique-id-preprocessor>
+        </preprocessors>
+      </service-to-test>
+    </test>
+    <test>
+      <unique-id>flatfile-transform@flatfile</unique-id>
+      <test-case>
+        <unique-id>assert-success</unique-id>
+        <input-message-provider>
+          <metadata-provider class="empty-metadata-provider"/>
+          <payload-provider class="inline-payload-provider">
+            <payload><![CDATA[HDRSRC20210101THE TITLE OF DOCSrcDescDestinationDesc  1234567890  
+DETField   1.01Field  1.02Field     1.0320210101Field   1.04400821
+TRL00000005                                                       ]]></payload>
+          </payload-provider>
+        </input-message-provider>
+        <assertions>
+          <assert-xml-payload-equals>
+            <payload><![CDATA[<?xml version="1.0" encoding="iso-8859-1" ?>
+<root><segment_Document><segment_Header><record_HDR><RecordType>HDR</RecordType><SourceCode>SRC</SourceCode><RunDate>20210101</RunDate><Title>THE TITLE OF DOC</Title><SourceDescription>SrcDesc</SourceDescription><DestDescription>DestinationDesc</DestDescription><Filler>1234567890</Filler></record_HDR></segment_Header><segment_Details><record_DET><RecordType>DET</RecordType><FieldOne>Field   1.01</FieldOne><FieldTwo>Field  1.02</FieldTwo><FieldThree>Field     1.03</FieldThree><CompletionDate>20210101</CompletionDate><FieldFour>Field   1.04</FieldFour><Filler>400821</Filler></record_DET></segment_Details><segment_Trailer><record_TRL><RecordType>TRL</RecordType><Total>00000005</Total><Filler></Filler></record_TRL></segment_Trailer></segment_Document></root>]]></payload>
+          </assert-xml-payload-equals>
+        </assertions>
+      </test-case>
+      <service-to-test>
+        <source class="file-source">
+          <file>file:///${service.tester.working.directory}/src/main/interlok/config/adapter.xml</file>
+        </source>
+        <preprocessors>
+          <service-unique-id-preprocessor>
+            <channel>flatfile</channel>
+            <workflow>flatfile</workflow>
+            <service>flatfile-transform</service>
+          </service-unique-id-preprocessor>
+          <properties-variable-substitution-preprocessor>
+            <properties>
+              <key-value-pair>
+                <key>ffDefinitionUrl</key>
+                <value>file:///${service.tester.working.directory}/src/main/interlok/config/transform/flatfile.definition.xml</value>
+              </key-value-pair>
+            </properties>
+          </properties-variable-substitution-preprocessor>
+        </preprocessors>
+      </service-to-test>
+    </test>
+    <test>
+      <unique-id>parse-new-service-id@flatfile</unique-id>
+      <test-case>
+        <unique-id>assert-metadata-exists</unique-id>
+        <input-message-provider>
+          <metadata-provider class="empty-metadata-provider"/>
+          <payload-provider class="inline-payload-provider">
+            <payload><![CDATA[<?xml version="1.0" encoding="iso-8859-1"?>
+<root>
+	<segment_Document>
+		<segment_Header>
+			<record_HDR>
+				<RecordType>HDR</RecordType>
+				<SourceCode>SRC</SourceCode>
+				<RunDate>20210101</RunDate>
+				<Title>THE TITLE OF DOC</Title>
+				<SourceDescription>SrcDesc</SourceDescription>
+				<DestDescription>DestinationDesc</DestDescription>
+				<Filler>1234567890</Filler>
+			</record_HDR>
+		</segment_Header>
+		<segment_Details>
+			<record_DET>
+				<RecordType>DET</RecordType>
+				<FieldOne>Field 1.01</FieldOne>
+				<FieldTwo>Field 1.02</FieldTwo>
+				<FieldThree>Field 1.03</FieldThree>
+				<CompletionDate>20210101</CompletionDate>
+				<FieldFour>Field 1.04</FieldFour>
+				<Filler>400821</Filler>
+			</record_DET>
+		</segment_Details>
+		<segment_Trailer>
+			<record_TRL>
+				<RecordType>TRL</RecordType>
+				<Total>00000005</Total>
+				<Filler/>
+			</record_TRL>
+		</segment_Trailer>
+	</segment_Document>
+</root>
+]]></payload>
+          </payload-provider>
+        </input-message-provider>
+        <assertions>
+          <assert-metadata-equals>
+            <metadata>
+              <key-value-pair>
+                <key>newDate</key>
+                <value>20210101</value>
+              </key-value-pair>
+            </metadata>
+          </assert-metadata-equals>
+        </assertions>
+      </test-case>
+      <service-to-test>
+        <source class="file-source">
+          <file>file:///${service.tester.working.directory}/src/main/interlok/config/adapter.xml</file>
+        </source>
+        <preprocessors>
+          <service-unique-id-preprocessor>
+            <channel>flatfile</channel>
+            <workflow>flatfile</workflow>
+            <service>parse-new-service-id</service>
+          </service-unique-id-preprocessor>
+        </preprocessors>
+      </service-to-test>
+    </test>
+    <test>
+      <unique-id>check-record-type@flatfile</unique-id>
+      <test-case>
+        <unique-id>assert-succes</unique-id>
+        <input-message-provider>
+          <metadata-provider class="inline-metadata-provider">
+            <metadata>
+              <key-value-pair>
+                <key>date</key>
+                <value>20210101</value>
+              </key-value-pair>
+              <key-value-pair>
+                <key>newDate</key>
+                <value>20210101</value>
+              </key-value-pair>
+            </metadata>
+          </metadata-provider>
+          <payload-provider class="empty-payload-provider"/>
+        </input-message-provider>
+        <assertions/>
+      </test-case>
+      <test-case>
+        <unique-id>assert-failure</unique-id>
+        <input-message-provider>
+          <metadata-provider class="inline-metadata-provider">
+            <metadata>
+              <key-value-pair>
+                <key>newDate</key>
+                <value>20210101</value>
+              </key-value-pair>
+            </metadata>
+          </metadata-provider>
+          <payload-provider class="empty-payload-provider"/>
+        </input-message-provider>
+        <assertions/>
+        <expected-exception>
+          <class-name>com.adaptris.core.ServiceException</class-name>
+        </expected-exception>
+      </test-case>
+      <service-to-test>
+        <source class="file-source">
+          <file>file:///${service.tester.working.directory}/src/main/interlok/config/adapter.xml</file>
+        </source>
+        <preprocessors>
+          <service-unique-id-preprocessor>
+            <channel>flatfile</channel>
+            <workflow>flatfile</workflow>
+            <service>check-record-type</service>
+          </service-unique-id-preprocessor>
+        </preprocessors>
+      </service-to-test>
+    </test>
+  </test-list>
+</service-test>
