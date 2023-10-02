@@ -101,7 +101,6 @@ if (randomNumber != 9) {
           <producer class="null-message-producer">
             <unique-id>tiny-hodgkin</unique-id>
           </producer>
-          <produce-exception-handler class="null-produce-exception-handler"/>
           <unique-id>flatfile</unique-id>
         </standard-workflow>
       </workflow-list>
