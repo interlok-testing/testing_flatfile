@@ -16,6 +16,7 @@ Finally a If service check if the new date equals the original one and throws an
 ```mermaid
 graph LR
   subgraph Flatfile
+    direction LR
     PT_C[Polling Trigger] --> ES(Create Flatfile)
     ES --> FX(Flatfile To XML)
     FX --> XP(Extract Date)
