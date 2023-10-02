@@ -1,5 +1,8 @@
 # Flatfile Testing
 
+[![license](https://img.shields.io/github/license/interlok-testing/testing_flatfile.svg)](https://github.com/interlok-testing/testing_flatfile/blob/develop/LICENSE)
+[![Actions Status](https://github.com/interlok-testing/testing_flatfile/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/interlok-testing/testing_flatfile/actions/workflows/gradle-build.yml)
+
 Project tests interlok-flatfile features
 
 ## What it does
