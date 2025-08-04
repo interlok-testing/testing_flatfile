@@ -23,7 +23,6 @@ dependencies {
   
   interlokJavadocs group: "com.adaptris", name: "interlok-flatfile", version: "$interlokVersion", classifier: "javadoc", changing: true, transitive: false
   interlokJavadocs group: "com.adaptris", name: "interlok-scripting", version: "$interlokVersion", classifier: "javadoc", changing: true, transitive: false
-  
-  interlokTestRuntime ("com.adaptris:interlok-service-tester:$interlokVersion") { changing=true }
+
   interlokTestRuntime ("com.adaptris:interlok-service-tester-xml:$interlokVersion") { changing=true }
 }
